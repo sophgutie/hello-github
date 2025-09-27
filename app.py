@@ -17,22 +17,3 @@ def init_db():
 
 init_db()
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-  conn = sqlite3.connect("messages.db")
-  c = conn.cursor()
-
-if request.method == "POST":
-  message = request.form["message"]
-  c.execute("INSERT INTO messages (content) VALUES (?)", (message,))
-  conn.commit()
-  return redirect("/")
-
-c.execute("SELECT content FROM messages")
-all_messages = c.fetchall()
-conn.close()
-
-return render_template("index.html", messages=all_messages)
-
-if __name__ = "__main__":
-  app.run(debug=True)
